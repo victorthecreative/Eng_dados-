@@ -100,8 +100,7 @@ def get_data(session_db, engine_db, start, limit, convert, key, url):
             percent_change_24h.append(coin['quote']['USD']['percent_change_24h'])
             percent_change_7d.append(coin['quote']['USD']['percent_change_7d'])
 
-
-        # Prepare a dictionary in order to turn it into a pandas dataframe below       
+      
         coin_dict = {
             "name" : name,
             "symbol": symbol,
@@ -122,21 +121,21 @@ def get_data(session_db, engine_db, start, limit, convert, key, url):
         print (f'Error to get data from APi: {e}')
         exit(1)
     
-    # create dataframe to structure data
+
     coins_df = pd.DataFrame(coin_dict, columns = ["name", "symbol", "data_added", "last_updated","price","volume_24h","circulating_supply","total_supply","max_supply","percent_change_1h","percent_change_24h","percent_change_7d"])
     print ("Data on Pandas Dataframe:\n")
     print(coins_df.head(100))
     
-    # call the function to load data on database
+
     load_data('tb_coins',coins_df, session_db, engine_db)
 
-# Declaration base
+
 Base = declarative_base()
 
-# Make the coin table
+
 get_session_db, get_engine = Coins.start()
 
-# call the get_data function and load data on database
+
 get_data(get_session_db,
          get_engine,
          '1',
